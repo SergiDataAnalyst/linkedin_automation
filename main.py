@@ -1,6 +1,7 @@
 import time
 import random
 import streamlit as st
+from urllib.parse import quote
 from bs4 import BeautifulSoup
 from seleniumbase import Driver
 from selenium.webdriver.common.by import By
@@ -22,7 +23,7 @@ def login_to_google(driver, google_email, google_password):
     next_button = driver.find_element(By.ID, "identifierNext")
     next_button.click()
 
-    time.sleep(random.uniform(1, 2))
+    time.sleep(random.uniform(2, 3))
     google_password_input = driver.find_element(By.XPATH,
                                                 "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section[2]/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input")
     time.sleep(random.uniform(1, 2))
@@ -48,7 +49,7 @@ def login_to_linkedin(driver, linkedin_email, linkedin_password):
 # def browse_through_pages():
 
 
-def extract_job_ids(driver, kms_radius_clean, experience_clean, work_options_clean, location_clean):
+def extract_job_ids(driver, keywords_clean, kms_radius_clean, experience_clean, work_options_clean, location_clean):
     results = -25
     full_job_list = []
     while find_no_results_banner(driver):
@@ -58,13 +59,12 @@ def extract_job_ids(driver, kms_radius_clean, experience_clean, work_options_cle
         try:
             driver.get(f"https://www.linkedin.com/jobs/search/?"
                        f"f_AL=true&f_E={experience_clean}&f_WT={work_options_clean}"
-                       f"&keywords=Data%20Analyst&location={location_clean}"
+                       f"&keywords={keywords_clean}&location={location_clean}"
                        f"&origin=JOB_SEARCH_PAGE_SEARCH_BUTTON&refresh=true&sortBy=R&start={results}")
             print("link is:", f"https://www.linkedin.com/jobs/search/?"
                               f"f_AL=true&f_E={experience_clean}&f_WT={work_options_clean}"
-                              f"&keywords=Data%20Analyst&location={location_clean}"
+                              f"&keywords={keywords_clean}&location={location_clean}"
                               f"&origin=JOB_SEARCH_PAGE_SEARCH_BUTTON&refresh=true&sortBy=R&start={results}")
-
             html_text = driver.page_source
             soup = BeautifulSoup(html_text, 'html.parser')
             li_elements = soup.find_all("li", class_='jobs-search-results__list-item')
@@ -116,21 +116,25 @@ def click_available_button(driver, *buttons):
 def main():
     st.title("LinkedIn Job Search")
 
-    col1, col2 = st.columns(2, gap="large")
+    col1, col2, col3 = st.columns(3, gap="large")
     with col1:
         col1.subheader("Login Information")
-        # Input for Google credentials
-        st.markdown("Your Google Account Information")
         google_email = st.text_input("Gmail Address:")
         google_password = st.text_input("Password:", type="password")
-        # Input for LinkedIn credentials
-        st.markdown("Your Linkedin Login")
+        st.info("""
+                    **Note**: Using Google login is **not mandatory** for using this app. 
+                    However, it is **recommend** to reduce the 
+                    likelihood of LinkedIn detecting your device as a bot.
+                """)
+
+    with col2:
+        col2.subheader("Sign Up to LinkedIn")
         linkedin_email = st.text_input("Linkedin email:")
         linkedin_password = st.text_input("Linkedin password:", type="password")
 
-    with col2:
-        col2.subheader("Job Search Information")
-        keywords = st.text_input("Keywords")
+    with col3:
+        col3.subheader("Job Search Information")
+        keywords = st.text_input("Keywords", placeholder="Ex: Data Analyst")
         location = st.text_input("Location")
         experience_levels = st.multiselect("Experience Levels", ["Internship", "Entry level", "Associate",
                                                                  "Mid-senior level", "Director", "Executive"])
@@ -145,36 +149,28 @@ def main():
         location_clean = ''.join(char for char in location if char.isalpha() or char.isspace())
         location_clean = location_clean.split()[0] if location_clean else ""
 
-        # Experience
-        experience_clean = ""
-        for exp in experience_levels:
-            if exp == "Internship":
-                experience_string = "%2C1"
-                experience_clean += experience_string
-            elif exp == "Entry level":
-                experience_string = "%2C2"
-                experience_clean += experience_string
-            elif exp == "Associate":
-                experience_string = "%2C3"
-                experience_clean += experience_string
-            elif exp == "Mid-senior level":
-                experience_string = "%2C4"
-                experience_clean += experience_string
-            elif exp == "Director":
-                experience_string = "%2C5"
-                experience_clean += experience_string
-            elif exp == "Executive":
-                experience_string = "%2C6"
-                experience_clean += experience_string
+        # Keywords
+        keywords_clean = quote(keywords)
 
-        work_options_clean = ""
-        for work in work_options:
-            if work == "On-site":
-                work_options_clean += "%2C1"
-            elif work == "Remote":
-                work_options_clean += "%2C2"
-            elif work == "Hybrid":
-                work_options_clean += "%2C3"
+        # Experience
+        experience_map = {
+            "Internship": "%2C1",
+            "Entry level": "%2C2",
+            "Associate": "%2C3",
+            "Mid-senior level": "%2C4",
+            "Director": "%2C5",
+            "Executive": "%2C6"
+        }
+
+        experience_clean = "".join(experience_map.get(exp, "") for exp in experience_levels)
+
+        work_options_map = {
+            "On-site": "%2C1",
+            "Remote": "%2C2",
+            "Hybrid": "%2C3"
+        }
+
+        work_options_clean = "".join(work_options_map.get(work, "") for work in work_options)
 
         # Distance in Kms
         kms_radius_clean = str(kms_radius)
@@ -184,7 +180,7 @@ def main():
 
         login_to_google(driver, google_email, google_password)
         login_to_linkedin(driver, linkedin_email, linkedin_password)
-        job_ids = extract_job_ids(driver, kms_radius_clean, experience_clean, work_options_clean, location_clean)
+        job_ids = extract_job_ids(driver, keywords_clean, kms_radius_clean, experience_clean, work_options_clean, location_clean)
         csv_file_path = 'job_ids.csv'
         print('check 1')
         print('check2')
