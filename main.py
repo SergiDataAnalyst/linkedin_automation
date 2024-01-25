@@ -36,6 +36,7 @@ def login_to_google(driver, google_email, google_password):
 
 def login_to_linkedin(driver, linkedin_email, linkedin_password):
     driver.get("https://www.linkedin.com/login")
+
     linkedin_email_input = driver.find_element(By.ID, "username")
     linkedin_password_input = driver.find_element(By.ID, "password")
 
