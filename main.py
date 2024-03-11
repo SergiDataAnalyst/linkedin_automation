@@ -31,7 +31,7 @@ def login_to_google(driver, google_email, google_password):
 
     next_button2 = driver.find_element(By.ID, "passwordNext")
     next_button2.click()
-    time.sleep(random.uniform(1, 2))
+    time.sleep(random.uniform(1, 3))
 
 
 def login_to_linkedin(driver, linkedin_email, linkedin_password):
