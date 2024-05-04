@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 
+
 def login_to_google(driver, google_email, google_password):
     driver.get(f"https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fwww.google.com"
                f"%2F&ec=GAZAmgQ&hl=es&ifkv=ASKXGp04cdQ4ElNs3UzAFmWKdcPI7QaiJOFXmP5U0LuVchToD3rjr6lG7sQXY"
