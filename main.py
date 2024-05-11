@@ -10,10 +10,12 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 def login_to_google(driver, google_email, google_password):
-    driver.get(f"https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fwww.google.com"
-               f"%2F&ec=GAZAmgQ&hl=es&ifkv=ASKXGp04cdQ4ElNs3UzAFmWKdcPI7QaiJOFXmP5U0LuVchToD3rjr6lG7sQXY"
-               f"Mvu-g8eGxD8CF4BpQ&passive=true&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S822338"
-               f"424%3A1701230921611405&theme=glif")
+    driver.get(f"https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%"
+               f"3Dgoogle%2Blog%2Bin%26rlz%3D1C1YTUH_esES1017ES1017%26oq%3Dgoogle%2Blog%2Bin%26gs_lcrp%3DEgZjaHJvbWUq"
+               f"BwgAEAAYgAQyBwgAEAAYgAQyCggBEAAYChgWGB4yCggCEAAYChgWGB4yCAgDEAAYFhgeMgoIBBAAGAoYFhgeMgYIBRBFGDwyBggG"
+               f"EEUYPDIGCAcQRRg8qAIAsAIA%26pf%3Dcs%26sourceid%3Dchrome%26ie%3DUTF-8&ec=GAZAAQ&hl=es&ifkv=AaSxoQwOjsz"
+               f"xpZm6eeB6YF0NGbHPyxvRVHc1FqhouQkJ4OF89UbmtVPElNPe1bXPOzOD3mmCcRq-Fw&passive=true&flowName=GlifWebSig"
+               f"nIn&flowEntry=ServiceLogin&dsh=S486938468%3A1715265339421294&theme=mn&ddm=0")
     driver.maximize_window()
 
     time.sleep(random.uniform(1, 2))
@@ -21,12 +23,11 @@ def login_to_google(driver, google_email, google_password):
     google_email_input.send_keys(google_email)
     time.sleep(random.uniform(1, 2))
 
-    next_button = driver.find_element(By.ID, "identifierNext")
+    next_button = driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[2]/c-wiz/div/div[3]/div/div[1]/div/div/button/span")
     next_button.click()
 
     time.sleep(random.uniform(2, 3))
-    google_password_input = driver.find_element(By.XPATH,
-                                                "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section[2]/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input")
+    google_password_input = driver.find_element(By.CLASS_NAME, "whsOnd")
     time.sleep(random.uniform(1, 2))
     google_password_input.send_keys(google_password)
 
@@ -209,6 +210,7 @@ def main():
                         max_attempts = 6
                         for attempt in range(max_attempts):
 
+                            time.sleep(7)
                             next_button, review_button, submit_button = (
                                 find_button(driver, 'Continue to next step'),
                                 find_button(driver, 'Review your application'),
