@@ -186,9 +186,6 @@ def main():
         login_to_google(driver, google_email, google_password)
         login_to_linkedin(driver, linkedin_email, linkedin_password)
         job_ids = extract_job_ids(driver, keywords_clean, kms_radius_clean, experience_clean, work_options_clean, location_clean)
-        csv_file_path = 'job_ids.csv'  ## deprecated now
-        print('check 1')
-        print('check2')
 
         for job_id in job_ids:
             driver.get("https://www.linkedin.com/jobs/view/" + job_id)
