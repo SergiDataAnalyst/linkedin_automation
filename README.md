@@ -1,6 +1,9 @@
 # LinkedIn Job Application Automator
 
-This project is a Streamlit-based application that automates the job application process on LinkedIn using the "Easy Apply" feature. It uses SeleniumBase for web automation, BeautifulSoup for parsing HTML, and Streamlit for the user interface.
+This project automates the job application process on LinkedIn on jobs that have the ``Easy Apply`` feature enabled`. It uses SeleniumBase for web automation, BeautifulSoup for parsing HTML, and Streamlit for the user interface.
+### Note
+
+- This script works better if the candidate has applied to several jobs prior to using it, as it uses the previously saved application answers to speed up the process.
 
 ## Features
 
@@ -46,11 +49,12 @@ This project is a Streamlit-based application that automates the job application
 
 ## Usage
 
-1. **Run the Streamlit application**:
+1. **Run the Streamlit application**: (execute on python terminal)
 
     ```sh
     streamlit run main.py
     ```
+This will automatically open a new window in your browser, if not go to step 2
 
 2. **Open your web browser** and navigate to `http://localhost:8501` to access the application.
 
