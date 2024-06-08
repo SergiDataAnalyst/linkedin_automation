@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 
-
+# Loging to Linkedin ####
 def login_to_google(driver, google_email, google_password):
     driver.get(f"https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%"
                f"3Dgoogle%2Blog%2Bin%26rlz%3D1C1YTUH_esES1017ES1017%26oq%3Dgoogle%2Blog%2Bin%26gs_lcrp%3DEgZjaHJvbWUq"
@@ -36,6 +36,7 @@ def login_to_google(driver, google_email, google_password):
     time.sleep(random.uniform(1, 3))
 
 
+# #### Loging to google #####
 def login_to_linkedin(driver, linkedin_email, linkedin_password):
     driver.get("https://www.linkedin.com/login")
     linkedin_email_input = driver.find_element(By.ID, "username")
@@ -47,10 +48,12 @@ def login_to_linkedin(driver, linkedin_email, linkedin_password):
 
     next_button3 = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[3]/div[1]/form/div[3]/button")
     next_button3.click()
-    time.sleep(random.uniform(15, 20))
+    time.sleep(random.uniform(10, 13))
 # def browse_through_pages():
 
 
+# Constructs the URL with the search parameters, iterates through all the available pages on the search
+# returns a list of the Linkedin job IDs
 def extract_job_ids(driver, keywords_clean, kms_radius_clean, experience_clean, work_options_clean, location_clean):
     results = -25
     full_job_list = []
@@ -183,13 +186,13 @@ def main():
         login_to_google(driver, google_email, google_password)
         login_to_linkedin(driver, linkedin_email, linkedin_password)
         job_ids = extract_job_ids(driver, keywords_clean, kms_radius_clean, experience_clean, work_options_clean, location_clean)
-        csv_file_path = 'job_ids.csv'
+        csv_file_path = 'job_ids.csv'  ## deprecated now
         print('check 1')
         print('check2')
 
         for job_id in job_ids:
             driver.get("https://www.linkedin.com/jobs/view/" + job_id)
-            time.sleep(random.uniform(1, 2))
+            time.sleep(random.uniform(1, 2))  ## TIMER Between job applications
             print("ID FOR JOB IS:", job_id)
 
             html_text = driver.get_page_source()
@@ -210,7 +213,7 @@ def main():
                         max_attempts = 6
                         for attempt in range(max_attempts):
 
-                            time.sleep(7)
+                            time.sleep(2)  ### Adjust this accordingly. Timer between NEXT button clicking events
                             next_button, review_button, submit_button = (
                                 find_button(driver, 'Continue to next step'),
                                 find_button(driver, 'Review your application'),
