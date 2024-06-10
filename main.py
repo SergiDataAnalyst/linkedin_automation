@@ -189,7 +189,7 @@ def main():
 
         for job_id in job_ids:
             driver.get("https://www.linkedin.com/jobs/view/" + job_id)
-            time.sleep(random.uniform(1, 2))  ## TIMER Between job applications
+            #time.sleep(random.uniform(0.2, 0.5))  ## TIMER Between job applications
             print("ID FOR JOB IS:", job_id)
 
             html_text = driver.get_page_source()
@@ -210,7 +210,7 @@ def main():
                         max_attempts = 6
                         for attempt in range(max_attempts):
 
-                            time.sleep(2)  ### Adjust this accordingly. Timer between NEXT button clicking events
+                            #time.sleep(0.1)  ### Adjust this accordingly. Timer between NEXT button clicking events
                             next_button, review_button, submit_button = (
                                 find_button(driver, 'Continue to next step'),
                                 find_button(driver, 'Review your application'),
