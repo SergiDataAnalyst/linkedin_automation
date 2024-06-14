@@ -129,7 +129,7 @@ def main():
         st.info("""
                     **Note**: Using Google login is **not mandatory** for using this app. 
                     However, it is **recommend** to reduce the 
-                    likelihood of LinkedIn detecting your device as a bot.
+                    likelihood of LinkedIn detecting your device as a bot
                 """)
 
     with col2:
