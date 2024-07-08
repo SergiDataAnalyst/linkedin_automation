@@ -8,8 +8,10 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 
+
 # Loging to Linkedin ####
 def login_to_google(driver, google_email, google_password):
+
     driver.get(f"https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%"
                f"3Dgoogle%2Blog%2Bin%26rlz%3D1C1YTUH_esES1017ES1017%26oq%3Dgoogle%2Blog%2Bin%26gs_lcrp%3DEgZjaHJvbWUq"
                f"BwgAEAAYgAQyBwgAEAAYgAQyCggBEAAYChgWGB4yCggCEAAYChgWGB4yCAgDEAAYFhgeMgoIBBAAGAoYFhgeMgYIBRBFGDwyBggG"
