@@ -121,6 +121,7 @@ def click_available_button(driver, *buttons):
 
 
 def main():
+
     st.title("LinkedIn Job Search")
 
     col1, col2, col3 = st.columns(3, gap="large")
